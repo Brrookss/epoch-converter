@@ -4,7 +4,7 @@ This program calculates and displays a date representing the number of seconds s
 
 ## Description
 
-Only dates post-Unix epoch are supported, so only non-negative integer values are considered valid input.
+Dates pre-Unix epoch are not supported, so only non-negative integer values are considered valid input.
 
 ## Getting Started
 
