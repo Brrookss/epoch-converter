@@ -23,14 +23,14 @@ def get_years_since_epoch(seconds: int) -> int:
 		seconds_in_year = get_seconds_in_year(years + constants.EPOCH)
 	return years, seconds
 
-def get_seconds_in_year(year: int) -> bool:
+def get_seconds_in_year(year: int) -> int:
 	seconds = constants.SECONDS_PER_YEAR
 
 	if is_leap_year(year):
 		seconds += constants.SECONDS_PER_DAY
 	return seconds
 
-def is_leap_year(year: int) -> int:
+def is_leap_year(year: int) -> bool:
 	return year % 4 == 0 and not is_skipped_leap_year(year)
 
 def is_skipped_leap_year(year: int) -> bool:
