@@ -3,8 +3,9 @@ from enumerations import Month
 
 
 def epoch_converter(seconds: int) -> str:
-	"""Takes an integer representing the number of seconds since the
-	Unix epoch (1 January 1970) and returns the date in MM-DD-YYYY format
+	"""
+	Takes a non-negative integer representing the number of seconds since the Unix epoch
+	on January 1st, 1970 and returns the date in the following format: MM-DD-YYYY
 	"""
 	years_since_epoch, seconds_remaining_in_months = get_years_since_epoch(seconds)
 	year = years_since_epoch + constants.EPOCH
