@@ -1,95 +1,84 @@
-DAYS_PER_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]  # Non-leap year
-SECONDS_PER_DAY = 86_400
-SECONDS_PER_YEAR = 31_536_000
+import constants
+from enumerations import Month
 
 
-def epoch_converter(num_sec):
-	"""Takes an integer representing the number of seconds since
-	the Unix epoch (January 1, 1970) and returns the formatted date
+def epoch_converter(seconds: int) -> str:
+	"""Takes an integer representing the number of seconds since the
+	Unix epoch (1 January 1970) and returns the date in MM-DD-YYYY format
 	"""
-	sec_rem_in_years = num_sec
-	years_since_epoch, sec_rem_in_months = get_years_since_epoch(sec_rem_in_years)
-	year = years_since_epoch + 1970
+	years_since_epoch, seconds_remaining_in_months = get_years_since_epoch(seconds)
+	year = years_since_epoch + constants.EPOCH
+	month, seconds_remaining_in_days = get_month(seconds_remaining_in_months, year)
+	day = get_day(seconds_remaining_in_days)
+	return format_date(day, month + 1, year)  # Month converted to 1-based indexing
 
-	month, sec_rem_in_days = get_month(sec_rem_in_months, year)
-	day = get_day(sec_rem_in_days, month)
+def get_years_since_epoch(seconds: int) -> int:
+	years = 0
 
-	date = format_date(day, month, year)
-	return date
+	seconds_in_year = get_seconds_in_year(years + constants.EPOCH)
+	while seconds >= seconds_in_year:
+		seconds -= seconds_in_year
+		years += 1
+		seconds_in_year = get_seconds_in_year(years + constants.EPOCH)
+	return years, seconds
 
-
-def get_years_since_epoch(num_sec):
-	sec_rem = num_sec
-	years_since_epoch = 0
-
-	sec_in_year = get_seconds_in_year(years_since_epoch + 1970)
-	while sec_rem >= sec_in_year:
-		sec_rem -= sec_in_year
-
-		years_since_epoch += 1
-		sec_in_year = get_seconds_in_year(years_since_epoch + 1970)
-	return years_since_epoch, sec_rem
-
-
-def get_seconds_in_year(year):
-	sec_in_year = 0
+def get_seconds_in_year(year: int) -> bool:
+	seconds = constants.SECONDS_PER_YEAR
 
 	if is_leap_year(year):
-		sec_in_leap_day = SECONDS_PER_DAY
-		sec_in_year += sec_in_leap_day
-	sec_in_year += SECONDS_PER_YEAR
-	return sec_in_year
+		seconds += constants.SECONDS_PER_DAY
+	return seconds
 
+def is_leap_year(year: int) -> int:
+	return year % 4 == 0 and not is_skipped_leap_year(year)
 
-def is_leap_year(year):
-	skipped_leap_year = year % 100 == 0 and year % 400 != 0
-	return year % 4 == 0 and not skipped_leap_year
+def is_skipped_leap_year(year: int) -> bool:
+	return year % 100 == 0 and year % 400 != 0
 
+def get_month(seconds: int, year: int) -> int:
+	month = Month.JANUARY.value
 
-def get_month(num_sec, year):
-	sec_rem = num_sec
-	month = 0
-
-	sec_in_month = get_sec_in_month(month, year)
-	while sec_rem >= sec_in_month and month < 11:
-		sec_rem -= sec_in_month
-
+	seconds_in_month = get_seconds_in_month(month, year)
+	while seconds >= seconds_in_month and month < constants.MONTHS:
+		seconds -= seconds_in_month
 		month += 1
-		sec_in_month = get_sec_in_month(month, year)
-	month += 1  # Convert to 1-based indexing
-	return month, sec_rem
+		seconds_in_month = get_seconds_in_month(month, year)
+	return month, seconds
 
+def get_seconds_in_month(month: int, year: int) -> int:
+	days = 0
 
-def get_sec_in_month(month, year):
-	num_days = 0
+	if month == Month.FEBRUARY.value and is_leap_year(year):
+		days += 1
+	days += constants.DAYS_PER_MONTH[month]
+	return days * constants.SECONDS_PER_DAY
 
-	if month == 1 and is_leap_year(year):
-		leap_day = 1
-		num_days += leap_day
-	num_days += DAYS_PER_MONTH[month]
-	return num_days * SECONDS_PER_DAY
-
-
-def get_day(num_sec, month):
-	sec_rem = num_sec
+def get_day(seconds: int) -> int:
 	day = 1
 
-	while sec_rem >= SECONDS_PER_DAY:
-		sec_rem -= SECONDS_PER_DAY
+	while seconds >= constants.SECONDS_PER_DAY:
+		seconds -= constants.SECONDS_PER_DAY
 		day += 1
 	return day
 
+def format_date(day: int, month: int, year: int) -> str:
+	day_str = format_digits(day)
+	month_str = format_digits(month)
+	return f"{month_str}-{day_str}-{year}"
 
-def format_date(day, month, year):
-	day_str = ''
-	if day < 10:
-		day_str += '0'
-	day_str += str(day)
+def format_digits(num: int) -> str:
+	result = ""
 
-	month_str = ''
-	if month < 10:
-		month_str += '0'
-	month_str += str(month)
+	if num < 10:
+		result += "0"
+	result += str(num)
+	return result
 
-	date = f'{month_str}-{day_str}-{year}'
-	return date
+if __name__ == "__main__":
+	try:
+		seconds = int(input("Seconds: "))
+		assert seconds >= 0
+		date = epoch_converter(seconds)
+		print(date)
+	except AssertionError:
+		print("Input must be non-negative")
