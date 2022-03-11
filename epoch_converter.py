@@ -46,10 +46,10 @@ def get_seconds_in_month(month: int, year: int) -> int:
 	return days * constants.SECONDS_PER_DAY
 
 def get_seconds_in_year(year: int) -> int:
-	seconds = constants.SECONDS_PER_YEAR
+	days = constants.DAYS_PER_YEAR
 	if is_leap_year(year):
-		seconds += constants.SECONDS_PER_DAY
-	return seconds
+		days += 1
+	return days * constants.SECONDS_PER_DAY
 
 def get_years_since_epoch(seconds: int) -> tuple:
 	years = 0
