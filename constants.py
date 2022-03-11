@@ -1,5 +1,5 @@
 DAYS_PER_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 EPOCH = 1970
-MONTHS = 11  # 0-based indexing
+MONTHS_PER_YEAR = 11  # 0-based indexing
 SECONDS_PER_DAY = 86_400
 SECONDS_PER_YEAR = 31_536_000

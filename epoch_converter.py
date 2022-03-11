@@ -7,15 +7,15 @@ def epoch_converter(seconds: int) -> str:
 	Unix epoch (1 January 1970) and returns the date in MM-DD-YYYY format
 	"""
 	try:
-		assert seconds >= 0
+		if seconds < 0:
+			raise ValueError("Input must be non-negative")
 		years_since_epoch, seconds_remaining_in_months = get_years_since_epoch(seconds)
 		year = years_since_epoch + constants.EPOCH
 		month, seconds_remaining_in_days = get_month(seconds_remaining_in_months, year)
 		day = get_day(seconds_remaining_in_days)
 		date = format_date(day, month + 1, year)  # Month converted to 1-based indexing
-		return date
-	except AssertionError:
-		print("Input must be non-negative")
+	except ValueError as e:
+		print(e)
 		date = ""
 	finally:
 		return date
@@ -47,7 +47,7 @@ def get_month(seconds: int, year: int) -> int:
 	month = Month.JANUARY.value
 
 	seconds_in_month = get_seconds_in_month(month, year)
-	while seconds >= seconds_in_month and month < constants.MONTHS:
+	while seconds >= seconds_in_month and month < constants.MONTHS_PER_YEAR:
 		seconds -= seconds_in_month
 		month += 1
 		seconds_in_month = get_seconds_in_month(month, year)
