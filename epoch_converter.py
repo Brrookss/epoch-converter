@@ -8,7 +8,7 @@ def epoch_converter(seconds: int) -> str:
 	on January 1st, 1970 and returns the date in the following format: MM-DD-YYYY
 	"""
 	years, seconds_remaining = get_years_since_epoch(seconds)
-	year = years + constants.EPOCH
+	year = constants.EPOCH + years
 	month, seconds_remaining = get_month(seconds_remaining, year)
 	day = get_day(seconds_remaining)
 	return format_date(day, month + 1, year)  # Month converted to 1-based indexing
@@ -30,7 +30,7 @@ def get_day(seconds: int) -> int:
 		day += 1
 	return day
 
-def get_month(seconds: int, year: int) -> int:
+def get_month(seconds: int, year: int) -> tuple:
 	month = Month.JANUARY.value
 	seconds_in_month = get_seconds_in_month(month, year)
 	while seconds >= seconds_in_month and month < constants.MONTHS_PER_YEAR:
@@ -40,10 +40,9 @@ def get_month(seconds: int, year: int) -> int:
 	return month, seconds
 
 def get_seconds_in_month(month: int, year: int) -> int:
-	days = 0
+	days = constants.DAYS_PER_MONTH[month]
 	if month == Month.FEBRUARY.value and is_leap_year(year):
 		days += 1
-	days += constants.DAYS_PER_MONTH[month]
 	return days * constants.SECONDS_PER_DAY
 
 def get_seconds_in_year(year: int) -> int:
@@ -52,13 +51,13 @@ def get_seconds_in_year(year: int) -> int:
 		seconds += constants.SECONDS_PER_DAY
 	return seconds
 
-def get_years_since_epoch(seconds: int) -> int:
+def get_years_since_epoch(seconds: int) -> tuple:
 	years = 0
 	seconds_in_year = get_seconds_in_year(constants.EPOCH)
 	while seconds >= seconds_in_year:
 		seconds -= seconds_in_year
 		years += 1
-		seconds_in_year = get_seconds_in_year(years + constants.EPOCH)
+		seconds_in_year = get_seconds_in_year(constants.EPOCH + years)
 	return years, seconds
 
 def is_leap_year(year: int) -> bool:
