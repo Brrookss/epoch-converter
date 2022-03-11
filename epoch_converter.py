@@ -6,11 +6,19 @@ def epoch_converter(seconds: int) -> str:
 	"""Takes an integer representing the number of seconds since the
 	Unix epoch (1 January 1970) and returns the date in MM-DD-YYYY format
 	"""
-	years_since_epoch, seconds_remaining_in_months = get_years_since_epoch(seconds)
-	year = years_since_epoch + constants.EPOCH
-	month, seconds_remaining_in_days = get_month(seconds_remaining_in_months, year)
-	day = get_day(seconds_remaining_in_days)
-	return format_date(day, month + 1, year)  # Month converted to 1-based indexing
+	try:
+		assert seconds >= 0
+		years_since_epoch, seconds_remaining_in_months = get_years_since_epoch(seconds)
+		year = years_since_epoch + constants.EPOCH
+		month, seconds_remaining_in_days = get_month(seconds_remaining_in_months, year)
+		day = get_day(seconds_remaining_in_days)
+		date = format_date(day, month + 1, year)  # Month converted to 1-based indexing
+		return date
+	except AssertionError:
+		print("Input must be non-negative")
+		date = ""
+	finally:
+		return date
 
 def get_years_since_epoch(seconds: int) -> int:
 	years = 0
@@ -75,10 +83,6 @@ def format_digits(num: int) -> str:
 	return result
 
 if __name__ == "__main__":
-	try:
-		seconds = int(input("Seconds: "))
-		assert seconds >= 0
-		date = epoch_converter(seconds)
-		print(date)
-	except AssertionError:
-		print("Input must be non-negative")
+	seconds = int(input("Seconds: "))
+	date = epoch_converter(seconds)
+	print(date)
