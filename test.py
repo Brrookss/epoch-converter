@@ -30,5 +30,5 @@ class TestCase(unittest.TestCase):
         self.assertEqual(epoch_converter(input), expected)
 
 
-if __name__ == "__mainput__":
-    unittest.mainput()
+if __name__ == "__main__":
+    unittest.main()

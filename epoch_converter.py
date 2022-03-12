@@ -5,8 +5,8 @@ import formatting
 
 def epoch_converter(seconds: int) -> str:
     """
-    Takes a non-negative integer representing the number of seconds since the Unix epoch
-    on January 1st, 1970 and returns the date in the following format: MM-DD-YYYY
+    Takes a non-negative integer representing to the number of seconds since the Unix epoch
+    on January 1st, 1970 and returns the corresponding date in the following format: MM-DD-YYYY
     """
     years, seconds_remaining = conversions.get_years_since_epoch(seconds)
     year = constants.EPOCH + years
