@@ -1,3 +1,5 @@
+"""Test cases for epoch conversion calculations."""
+
 import unittest
 from epoch_converter import epoch_converter
 
