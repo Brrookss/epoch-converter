@@ -15,18 +15,17 @@ import constants
 import calculations
 
 
-def get_arguments() -> int:
+def get_arguments() -> argparse.Namespace:
     """Parses command line arguments.
 
-    :return: number of seconds provided by user
+    :return: command line arguments object
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("seconds", type=int,
-                        help="number of seconds since the Unix epoch"
-                        )
+                        help="number of seconds since the Unix epoch")
 
     args = parser.parse_args()
-    return args.seconds
+    return args
 
 
 def converter(seconds: int) -> str:
@@ -52,8 +51,9 @@ def main() -> None:
 
     :return: None
     """
+    args = get_arguments()
     try:
-        seconds = get_arguments()
+        seconds = args.seconds
         if seconds < 0:
             raise ValueError
     except ValueError:
