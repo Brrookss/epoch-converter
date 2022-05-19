@@ -33,10 +33,11 @@ def converter(seconds: int) -> str:
     following format: MM-DD-YYYY.
 
     :param seconds: number of seconds since the Unix epoch
+    :raises ValueError: when provided a negative value
     :return: formatted date
     """
     if seconds < 0:
-        raise ValueError("Argument must be a non-negative integer")
+        raise ValueError("Argument must be non-negative")
 
     years, seconds_remaining = calculations.get_years_since_epoch(seconds)
     year = constants.EPOCH + years
@@ -56,9 +57,10 @@ def main() -> None:
     args = get_arguments()
     try:
         date = converter(args.seconds)
-        print(date)
     except ValueError as e:
         print(e)
+    else:
+        print(date)
 
 
 if __name__ == "__main__":

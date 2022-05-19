@@ -32,6 +32,11 @@ class TestCase(unittest.TestCase):
         expected = "02-29-8360"
         self.assertEqual(converter(input), expected)
 
+    def test6(self):
+        input = -1
+        with self.assertRaises(ValueError):
+            converter(input)
+
 
 if __name__ == "__main__":
     unittest.main()
