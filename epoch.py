@@ -5,14 +5,13 @@ following format: MM-DD-YYYY.
 Dates pre-Unix epoch are not supported; only non-negative integer values
 are considered valid input.
 
-usage: python3 epoch.py [-h] seconds
+Usage: python3 epoch.py [-h] seconds
 """
 
 import argparse
-import sys
 
-import constants
 import calculations
+import constants
 
 
 def get_arguments() -> argparse.Namespace:
@@ -36,6 +35,9 @@ def converter(seconds: int) -> str:
     :param seconds: number of seconds since the Unix epoch
     :return: formatted date
     """
+    if seconds < 0:
+        raise ValueError("Argument must be a non-negative integer")
+
     years, seconds_remaining = calculations.get_years_since_epoch(seconds)
     year = constants.EPOCH + years
 
@@ -53,14 +55,10 @@ def main() -> None:
     """
     args = get_arguments()
     try:
-        seconds = args.seconds
-        if seconds < 0:
-            raise ValueError
-    except ValueError:
-        sys.exit("argument must be a non-negative integer")
-
-    date = converter(seconds)
-    print(date)
+        date = converter(args.seconds)
+        print(date)
+    except ValueError as e:
+        print(e)
 
 
 if __name__ == "__main__":
