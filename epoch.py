@@ -40,7 +40,7 @@ def converter(seconds: int) -> str:
         raise ValueError("Argument must be non-negative")
 
     years, seconds_remaining = calculations.get_years_since_epoch(seconds)
-    year = constants.EPOCH + years
+    year = constants.EPOCH_YEAR + years
 
     month, seconds_remaining = calculations.get_month(seconds_remaining, year)
     day = calculations.get_day(seconds_remaining)

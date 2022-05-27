@@ -42,7 +42,8 @@ def get_seconds_in_month(month: int, year: int) -> int:
     days = constants.DAYS_PER_MONTH[month]
     if month == constants.FEBRUARY and is_leap_year(year):
         days += 1
-    return days * constants.SECONDS_PER_DAY
+    seconds = days * constants.SECONDS_PER_DAY
+    return seconds
 
 
 def get_seconds_in_year(year: int) -> int:
@@ -54,21 +55,22 @@ def get_seconds_in_year(year: int) -> int:
     days = constants.DAYS_PER_YEAR
     if is_leap_year(year):
         days += 1
-    return days * constants.SECONDS_PER_DAY
+    seconds = days * constants.SECONDS_PER_DAY
+    return seconds
 
 
 def get_years_since_epoch(seconds: int) -> tuple:
-    """Calculates number of years since the Unix epoch on January 1st, 1970.
+    """Calculates number of years since the Unix epoch on January 1, 1970.
 
     :param seconds: number of seconds since epoch
     :return: year number, seconds remaining at start of calculated year
     """
     years = 0
-    seconds_in_year = get_seconds_in_year(constants.EPOCH)
+    seconds_in_year = get_seconds_in_year(constants.EPOCH_YEAR)
     while seconds >= seconds_in_year:
         seconds -= seconds_in_year
         years += 1
-        seconds_in_year = get_seconds_in_year(constants.EPOCH + years)
+        seconds_in_year = get_seconds_in_year(constants.EPOCH_YEAR + years)
     return years, seconds
 
 
