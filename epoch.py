@@ -34,7 +34,7 @@ def converter(seconds: int) -> str:
 
     :param seconds: number of seconds since the Unix epoch
     :raises ValueError: when provided a negative value
-    :return: formatted date
+    :return: string in date format
     """
     if seconds < 0:
         raise ValueError("Argument must be non-negative")
@@ -45,7 +45,7 @@ def converter(seconds: int) -> str:
     month, seconds_remaining = calculations.get_month(seconds_remaining, year)
     day = calculations.get_day(seconds_remaining)
 
-    month += 1  # Converts to 1-based indexing
+    month += 1  # To 1-based indexing
     return f"{month:02d}-{day:02d}-{year}"
 
 
