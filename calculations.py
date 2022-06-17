@@ -1,5 +1,7 @@
 """Calculations used for epoch conversion."""
 
+from typing import Tuple
+
 import constants
 
 
@@ -16,7 +18,7 @@ def get_day(seconds: int) -> int:
     return day
 
 
-def get_month(seconds: int, year: int) -> tuple:
+def get_month(seconds: int, year: int) -> Tuple[int, int]:
     """Converts number of seconds to months.
 
     :param seconds: number of seconds since start of current year
@@ -59,7 +61,7 @@ def get_seconds_in_year(year: int) -> int:
     return seconds
 
 
-def get_years_since_epoch(seconds: int) -> tuple:
+def get_years_since_epoch(seconds: int) -> Tuple[int, int]:
     """Calculates number of years since the Unix epoch on January 1, 1970.
 
     :param seconds: number of seconds since epoch
