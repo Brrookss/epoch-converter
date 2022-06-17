@@ -13,10 +13,8 @@ considered valid input.
 
 ### Executing program
 
-```
-python3 epoch.py [-h] seconds
-```
+```python3 epoch.py [-h] seconds```
 
 ## Authors
 
-Brooks Burns
+[Brooks Burns](https://github.com/Brrookss)
